@@ -1,32 +1,32 @@
 const colors = {
-  green: {
-    wrapperBackground: "#E6E1C3",
-    headerBackground: "#C1C72C",
-    headerColor: "black",
-    photoBorderColor: "#black"
-  },
-  blue: {
-    wrapperBackground: "#5F64D3",
-    headerBackground: "#26175A",
-    headerColor: "white",
-    photoBorderColor: "#73448C"
-  },
-  pink: {
-    wrapperBackground: "#879CDF",
-    headerBackground: "#FF8374",
-    headerColor: "white",
-    photoBorderColor: "#FEE24C"
-  },
-  red: {
-    wrapperBackground: "#DE9967",
-    headerBackground: "#870603",
-    headerColor: "white",
-    photoBorderColor: "white"
-  }
+	green : {
+		wrapperBackground : '#E6E1C3',
+		headerBackground  : '#C1C72C',
+		headerColor       : 'black',
+		photoBorderColor  : '#black'
+	},
+	blue  : {
+		wrapperBackground : '#5F64D3',
+		headerBackground  : '#26175A',
+		headerColor       : 'white',
+		photoBorderColor  : '#73448C'
+	},
+	pink  : {
+		wrapperBackground : '#879CDF',
+		headerBackground  : '#FF8374',
+		headerColor       : 'white',
+		photoBorderColor  : '#FEE24C'
+	},
+	red   : {
+		wrapperBackground : '#DE9967',
+		headerBackground  : '#870603',
+		headerColor       : 'white',
+		photoBorderColor  : 'white'
+	}
 };
 
-function generateHTML(data) {
-  return `<!DOCTYPE html>
+function generateHTML(color, res, map, stars) {
+	return `<!DOCTYPE html>
 <html lang="en">
    <head>
       <meta charset="UTF-8" />
@@ -34,6 +34,7 @@ function generateHTML(data) {
       <meta http-equiv="X-UA-Compatible" content="ie=edge" />
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
       <link href="https://fonts.googleapis.com/css?family=BioRhyme|Cabin&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       <title>Document</title>
       <style>
           @page {
@@ -52,9 +53,14 @@ function generateHTML(data) {
          height: 100%;
          }
          .wrapper {
-         background-color: ${colors[data.color].wrapperBackground};
+         background-color: ${colors[color].wrapperBackground};
          padding-top: 100px;
+         
          }
+         textcenter {
+            justify-content: center;
+         }
+
          body {
          background-color: white;
          -webkit-print-color-adjust: exact !important;
@@ -90,12 +96,13 @@ function generateHTML(data) {
          .photo-header {
          position: relative;
          margin: 0 auto;
+         margin-left 50px;
          margin-bottom: -50px;
          display: flex;
          justify-content: center;
          flex-wrap: wrap;
-         background-color: ${colors[data.color].headerBackground};
-         color: ${colors[data.color].headerColor};
+         background-color: ${colors[color].headerBackground};
+         color: ${colors[color].headerColor};
          padding: 10px;
          width: 95%;
          border-radius: 6px;
@@ -106,7 +113,7 @@ function generateHTML(data) {
          border-radius: 50%;
          object-fit: cover;
          margin-top: -75px;
-         border: 6px solid ${colors[data.color].photoBorderColor};
+         border: 6px solid ${colors[color].photoBorderColor};
          box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
          }
          .photo-header h1, .photo-header h2 {
@@ -149,8 +156,8 @@ function generateHTML(data) {
          .card {
            padding: 20px;
            border-radius: 6px;
-           background-color: ${colors[data.color].headerBackground};
-           color: ${colors[data.color].headerColor};
+           background-color: ${colors[color].headerBackground};
+           color: ${colors[color].headerColor};
            margin: 20px;
          }
          
@@ -170,8 +177,70 @@ function generateHTML(data) {
             zoom: .75; 
           } 
          }
-      </style>`
-      
-        }
+      </style>
+      <body>
+      <div class=" wrapper text-center">
+         <div class="photo-header">
+            <img src="${res.data.avatar_url}"/>
+            
+            <h1>Hi!</h1>
+            <h2>
+            My name is ${res.data.name}!</h1>
+            <h5>${res.data.company ? `Currently @ ${res.data.company}` : ''}</h5>
+            <nav class="links-nav">
+               ${res.data.location
+					? `<a class="nav-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/${res
+							.data.location}"><i class="fas fa-location-arrow"></i> ${res.data.location}</a>`
+					: ''}
+               <a class="nav-link" target="_blank" rel="noopener noreferrer" href="${res.data
+					.html_url}"><i class="fab fa-github-alt"></i> GitHub</a>
+               ${res.data.blog
+					? `<a class="nav-link" target="_blank" rel="noopener noreferrer" href="${res.data
+							.blog}"><i class="fas fa-rss"></i> Blog</a>`
+					: ''}
+            </nav>
+         </div>
+         <main>
+            <div class="container">
+            <div class="row">
+               <div class="col">
+                  <h3>${res.data.bio ? `${res.data.bio}` : ''}</h3>
+               </div>
+               </div>
+               <div class="row">
+               <div class="col">
+                  <div class="card">
+                    <h3>Public Repositories</h3>
+                    <h4>${res.data.public_repos}</h4>
+                  </div>
+               </div>
+                <div class="col">
+                <div class="card">
+                  <h3>Followers</h3>
+                  <h4>${res.data.followers}</h4>
+                </div>
+               </div>
+               </div>
+               <div class="row">
+               <div class="col">
+               <div class="card">
+                  <h3>GitHub Stars</h3>
+                  <h4>${stars}</h4>
+                  </div>
+               </div>
+                <div class="col">
+                <div class="card">
+                  <h3>Following</h3>
+                  <h4>${res.data.following}</h4>
+                  </div>
+               </div>
+               </div>
+            </div>
+         </main>
+      </div>
+   </body>`;
+}
 
-        module.exports = generateHTML;
+module.exports = {
+	generateHTML : generateHTML
+};
