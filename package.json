@@ -19,6 +19,9 @@
   "homepage": "https://github.com/jorxan/pdfcreator#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "inquirer": "^7.1.0"
+    "electron-html-to": "^2.6.0",
+    "html-pdf": "^2.2.0",
+    "inquirer": "^7.1.0",
+    "open": "^7.0.3"
   }
 }
